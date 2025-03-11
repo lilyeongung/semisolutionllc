@@ -1,5 +1,5 @@
 // This line brings in a tool that helps describe the website for search engines
-import type { Metadata } from "next";
+// import type { Metadata } from "next";
 // These lines bring in two different text styles (fonts) to use on our website
 import { Geist, Geist_Mono } from "next/font/google";
 // This imports styling rules from another file to make our website look pretty
