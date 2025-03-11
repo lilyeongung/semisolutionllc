@@ -12,16 +12,26 @@ export default function Listings() {
 
   useEffect(() => {
     fetch("/api/listings")
-      .then((res) => res.json())
-      .then((data) => setListings(data));
+      .then((res) => {
+        if (!res.ok) throw new Error("Fetch failed");
+        return res.json();
+      })
+      .then((data) => {
+        console.log("API Response:", data); // Debug
+        setListings(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching listings:", error);
+        setListings([]); // Reset to empty array on error
+      });
   }, []);
 
   const addListing = async () => {
-    if (title && price) {
+    if (title && description && price) {
       const res = await fetch("/api/listings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, price: Number(price) }),
+        body: JSON.stringify({ title, description, price: Number(price) }),
       });
       const newListing = await res.json();
       setListings([...listings, newListing]);
@@ -34,6 +44,7 @@ export default function Listings() {
   return (
     <div className="p-4">
       <h2 className="text-2xl font-bold">Listings</h2>
+
       <div className="my-4">
         <input
           type="text"
@@ -60,14 +71,20 @@ export default function Listings() {
           Add Listing
         </button>
       </div>
+
       <ul className="list-disc pl-5">
-        {listings.map((listing) => (
-          <li key={listing.id} className="my-2">
-            {listing.title} - {listing.description} - ${listing.price}
-            <button className="ml-4 bg-green-500 text-white p-1">Buy</button>
-          </li>
-        ))}
+        {Array.isArray(listings) ? (
+          listings.map((listing) => (
+            <li key={listing.id} className="my-2">
+              {listing.title} - {listing.description || "No description"} - ${listing.price}
+              <button className="ml-4 bg-green-500 text-white p-1">Buy</button>
+            </li>
+          ))
+        ) : (
+          <li>No listings available</li>
+        )}
       </ul>
+
     </div>
   );
 }
