@@ -19,12 +19,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"], // This makes sure we have letters for English and similar languages
 });
 
-// This section provides basic information about our website
-// Like the title and description you might see in Google search results
-export const metadata: Metadata = {
-  title: "SemiSolutionLLC", // The name of our website
-  description: "Semiconductor and IT equipment solutions", // A short description of what our website is about
-};
+
 
 // This function creates the basic structure for EVERY page on our website
 // Think of it like a template or the frame of a house - all pages will use this structure
